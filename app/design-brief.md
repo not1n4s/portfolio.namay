@@ -28,7 +28,7 @@ Animation mode: animated-website
 ## Journey
 Journey shape: single-shot. One continuous 15-second film gives the portfolio a stronger identity and avoids decorative scene switching.
 Chapter 1 focal point: a suspended chrome crop frame in dark liquid. Headline: Thumbnails that hold attention. Body: Two years of visual decisions built for the split second before a click. Proof tags: 2 years.
-Chapter 2: the crop frame transitions to the action-led train composition. Headline: 25M+ views across the work.
+Chapter 2: the crop frame transitions to the action-led train composition. Headline: more than 5,000,000 reached.
 Chapter 3: the crop frame transitions to the vaccine explainer. Headline: Range without losing clarity.
 Chapter 4: the crop frame transitions to the heritage story. Headline: Stories built for the first glance.
 Chapter 5: the crop frame transitions to the Astana ensemble image. Headline: Every frame earns its place.
@@ -48,7 +48,7 @@ Delivery budget: desktop clips at or below 32 MiB total, mobile clips at or belo
 ## Section plan
 1. Fixed single-line navigation with monogram, work anchor, proof anchor, and one capsule CTA.
 2. Full-viewport scroll-scrub journey with five semantic chapters over one continuous film.
-3. Asymmetric proof band with one large 25M+ figure and a compact two-year context column.
+3. Asymmetric proof band with one large 5,000,000 figure and a compact two-year context column.
 4. Horizontal portfolio rail with six empty media frames, each clearly marked for later thumbnail insertion.
 5. Divided process ledger with three unequal rows: frame, sharpen, deliver.
 6. Full-width closing statement with a distinct underline-sweep contact CTA.
@@ -75,7 +75,7 @@ Closing CTA garment: oversized text link with a liquid underline sweep and tacti
 
 ## Content limits
 No invented thumbnails, clients, testimonials, awards, or performance percentages.
-Only the supplied facts are used: two years of experience and more than 25 million accumulated views.
+Only the supplied facts are used: two years of experience and more than 5,000,000 accumulated views.
 Contact links remain neutral V1 anchors until the client provides a real email and social handles.
 
 ## Combinatorial reference-board pick

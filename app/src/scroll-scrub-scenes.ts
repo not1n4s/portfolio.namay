@@ -14,7 +14,7 @@ export const scrollScrubTheme: ScrollScrubTheme = {
 export const scrollScrubScenes: ScrollScrubScene[] = [
   {
     align: "left",
-    body: "I’m Namay Prakash, a YouTube thumbnail designer with two years of experience and 25M+ accumulated views.",
+    body: "I’m Namay Prakash, a YouTube thumbnail designer with two years of experience and more than 5,000,000 accumulated views.",
     clip: siteAsset("assets/world/frame-current.mp4"),
     id: "opening",
     kicker: "Namay Prakash",
@@ -25,7 +25,7 @@ export const scrollScrubScenes: ScrollScrubScene[] = [
     objectPosition: "50% 50%",
     poster: siteAsset("assets/world/frame-current-poster.png"),
     scroll: 7.5,
-    tags: ["2 years", "25M+ accumulated views"],
+    tags: ["2 years", "More than 5,000,000 views"],
     title: "Thumbnails designed to earn the click",
   },
 ];

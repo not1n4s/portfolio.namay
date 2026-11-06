@@ -19,7 +19,7 @@ declare const __HF_DESIGN_INSPECTOR__: boolean;
 const SITE_URL = "https://not1n4s.github.io/portfolio.namay";
 const DEFAULT_TITLE = "Frame Current | YouTube Thumbnails";
 const DEFAULT_DESCRIPTION =
-  "YouTube thumbnail design portfolio with two years of experience and 25M+ accumulated views.";
+  "YouTube thumbnail design portfolio with two years of experience and more than 5,000,000 accumulated views.";
 
 type AppMeta = {
   og_title?: string | null;

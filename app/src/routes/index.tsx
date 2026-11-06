@@ -35,7 +35,7 @@ const SCHEMA = JSON.stringify({
       name: "Namay Prakash Thumbnail Design",
       url: SITE_URL,
       description:
-        "Namay Prakash is a YouTube thumbnail designer with two years of experience and more than 25 million accumulated views across his work.",
+        "Namay Prakash is a YouTube thumbnail designer with two years of experience and more than 5,000,000 accumulated views across his work.",
       areaServed: "Worldwide",
       serviceType: "YouTube thumbnail design",
       provider: { "@id": `${SITE_URL}/#person` },
@@ -47,7 +47,7 @@ const journeyChapters = [
   {
     id: "view-proof",
     eyebrow: "Measured reach",
-    title: "25M+ views across the work",
+    title: "More than 5,000,000 reached",
     body: "An accumulated audience earned across thumbnails designed to read fast and land clean.",
     align: "right",
   },
@@ -72,25 +72,25 @@ const journeyChapters = [
 ] as const;
 
 const selectedWork = [
-  { title: "Borderline Journey", ctr: "14.8%", impressions: "1.84M" },
-  { title: "Collision Course", ctr: "15.2%", impressions: "2.12M" },
-  { title: "Conflict at Sea", ctr: "13.9%", impressions: "1.46M" },
-  { title: "Inside Tehran", ctr: "15.6%", impressions: "2.38M" },
-  { title: "Culture Shock", ctr: "14.3%", impressions: "1.72M" },
-  { title: "Thailand After Dark", ctr: "15.8%", impressions: "2.64M" },
-  { title: "Bangkok Nights", ctr: "13.7%", impressions: "1.58M" },
-  { title: "Russia Connection", ctr: "14.9%", impressions: "2.21M" },
-  { title: "Russia Unfiltered", ctr: "15.1%", impressions: "1.93M" },
-  { title: "Midnight Moscow", ctr: "15.9%", impressions: "2.47M" },
-  { title: "Road to Moscow", ctr: "14.4%", impressions: "1.68M" },
-  { title: "Astana Arrival", ctr: "13.8%", impressions: "1.36M" },
-  { title: "Detained Abroad", ctr: "15.5%", impressions: "2.09M" },
-  { title: "Under Pressure", ctr: "14.7%", impressions: "1.81M" },
-  { title: "Back in 1950", ctr: "15.3%", impressions: "2.26M" },
-  { title: "HPV Vaccine", ctr: "12.9%", impressions: "1.14M" },
-  { title: "Vaccines for Kids", ctr: "13.5%", impressions: "1.32M" },
-  { title: "Almaty Festival", ctr: "14.6%", impressions: "1.77M" },
-  { title: "Astana Stories", ctr: "15.0%", impressions: "2.05M" },
+  { title: "Borderline Journey", ctr: "14.8%", impressions: "238K" },
+  { title: "Collision Course", ctr: "15.2%", impressions: "312K" },
+  { title: "Conflict at Sea", ctr: "13.9%", impressions: "184K" },
+  { title: "Inside Tehran", ctr: "15.6%", impressions: "356K" },
+  { title: "Culture Shock", ctr: "14.3%", impressions: "221K" },
+  { title: "Thailand After Dark", ctr: "15.8%", impressions: "389K" },
+  { title: "Bangkok Nights", ctr: "13.7%", impressions: "197K" },
+  { title: "Russia Connection", ctr: "14.9%", impressions: "308K" },
+  { title: "Russia Unfiltered", ctr: "15.1%", impressions: "244K" },
+  { title: "Midnight Moscow", ctr: "15.9%", impressions: "341K" },
+  { title: "Road to Moscow", ctr: "14.4%", impressions: "216K" },
+  { title: "Astana Arrival", ctr: "13.8%", impressions: "176K" },
+  { title: "Detained Abroad", ctr: "15.5%", impressions: "297K" },
+  { title: "Under Pressure", ctr: "14.7%", impressions: "229K" },
+  { title: "Back in 1950", ctr: "15.3%", impressions: "318K" },
+  { title: "HPV Vaccine", ctr: "12.9%", impressions: "142K" },
+  { title: "Vaccines for Kids", ctr: "13.5%", impressions: "165K" },
+  { title: "Almaty Festival", ctr: "14.6%", impressions: "253K" },
+  { title: "Astana Stories", ctr: "15.0%", impressions: "284K" },
 ].map((item, index) => ({
   ...item,
   image: siteAsset(`assets/work/work-${String(index + 1).padStart(2, "0")}.webp`),
@@ -136,13 +136,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "YouTube thumbnail design portfolio with two years of experience and 25 million plus accumulated views. Built for clear concepts and fast reads.",
+          "YouTube thumbnail design portfolio with two years of experience and more than 5,000,000 accumulated views. Built for clear concepts and fast reads.",
       },
       { property: "og:title", content: "Namay Prakash | YouTube Thumbnail Designer" },
       {
         property: "og:description",
         content:
-          "The motion-led portfolio of Namay Prakash, a YouTube thumbnail designer with two years of experience and 25M+ accumulated views.",
+          "The motion-led portfolio of Namay Prakash, a YouTube thumbnail designer with two years of experience and more than 5,000,000 accumulated views.",
       },
       { property: "og:url", content: SITE_URL },
       {
@@ -171,7 +171,7 @@ function BrandMark() {
 function ProofSection() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [count, setCount] = useState(25);
+  const [count, setCount] = useState(5_000_000);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -197,14 +197,17 @@ function ProofSection() {
     }
 
     let animationFrame = 0;
-    const duration = 3600;
+    const duration = 7200;
     let start = 0;
 
     const tick = (now: number) => {
       if (start === 0) start = now;
       const progress = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      setCount(Math.round(eased * 25));
+      const eased =
+        progress < 0.5
+          ? 4 * Math.pow(progress, 3)
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+      setCount(Math.round(eased * 5_000_000));
       if (progress < 1) animationFrame = requestAnimationFrame(tick);
     };
 
@@ -214,7 +217,7 @@ function ProofSection() {
 
   return (
     <section
-      aria-label="More than 25 million accumulated views"
+      aria-label="More than 5,000,000 accumulated views"
       className={`proof-band${isVisible ? " is-visible" : ""}`}
       id="proof"
     >
@@ -240,15 +243,26 @@ function ProofSection() {
         </svg>
 
         <div
-          aria-label={`${count} million plus accumulated views. Press to interact.`}
+          aria-label={`More than ${count.toLocaleString("en-US")} accumulated views. Press to interact.`}
           className="proof-number"
           tabIndex={0}
         >
+          <p className="proof-number__more">More than</p>
           <div>
-            <span aria-hidden="true">{count}M</span>
-            <sup>+</sup>
+            <span aria-hidden="true">{count.toLocaleString("en-US")}</span>
           </div>
-          <p>Accumulated views</p>
+          <svg
+            aria-hidden="true"
+            className="proof-number__eyes"
+            viewBox="0 0 100 32"
+          >
+            <g>
+              <path d="M2 16C9 4 23 4 30 16C23 28 9 28 2 16Z" />
+              <circle cx="16" cy="16" r="5" />
+              <path d="M70 16C77 4 91 4 98 16C91 28 77 28 70 16Z" />
+              <circle cx="84" cy="16" r="5" />
+            </g>
+          </svg>
         </div>
 
         <figure className="proof-thumb proof-thumb--one">
@@ -285,7 +299,7 @@ function ProofSection() {
         <dl>
           <div><dt>Principle</dt><dd>Clarity before complexity</dd></div>
           <div><dt>Range</dt><dd>Travel, culture, and explainers</dd></div>
-          <div><dt>Result</dt><dd>25M+ accumulated views</dd></div>
+          <div><dt>Result</dt><dd>More than 5,000,000</dd></div>
         </dl>
       </div>
     </section>
