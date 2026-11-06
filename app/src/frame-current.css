@@ -29,6 +29,187 @@ a {
   font-family: "Outfit", sans-serif;
 }
 
+body.intro-lock {
+  overflow: hidden;
+}
+
+.portfolio-intro {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(1.5rem, 5vw, 5rem);
+  background: var(--fc-ink);
+  color: var(--fc-mineral);
+  opacity: 1;
+  transform: translateZ(0);
+  transition:
+    clip-path 850ms cubic-bezier(0.76, 0, 0.24, 1),
+    opacity 420ms ease 360ms;
+  clip-path: inset(0 0 0 0 round 0);
+}
+
+.portfolio-intro.is-leaving {
+  opacity: 0;
+  clip-path: inset(0 0 100% 0 round 0 0 50% 50%);
+  pointer-events: none;
+}
+
+.portfolio-intro__grain {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 18% 25%, rgb(224 93 82 / 0.23), transparent 28%),
+    radial-gradient(circle at 82% 70%, rgb(243 240 234 / 0.09), transparent 26%),
+    linear-gradient(120deg, transparent 30%, rgb(224 93 82 / 0.08) 49%, transparent 68%);
+  animation: intro-drift 5s ease-in-out infinite alternate;
+}
+
+.portfolio-intro__layout {
+  position: relative;
+  display: grid;
+  width: min(100%, 78rem);
+  grid-template-columns: minmax(0, 1.25fr) minmax(17rem, 0.75fr);
+  gap: clamp(2.5rem, 8vw, 8rem);
+  align-items: center;
+}
+
+.portfolio-intro__eyebrow,
+.portfolio-intro__progress-meta,
+.portfolio-intro__portrait p {
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.portfolio-intro__eyebrow {
+  margin: 0 0 1.25rem;
+  color: var(--fc-accent);
+  font-size: 0.72rem;
+}
+
+.portfolio-intro h1 {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(3.15rem, 7.2vw, 7.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.07em;
+}
+
+.portfolio-intro h1 span {
+  display: block;
+  color: var(--fc-slate);
+  font-size: 0.52em;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.portfolio-intro__support {
+  max-width: 38rem;
+  margin: 1.5rem 0 0;
+  color: var(--fc-slate);
+  font-size: clamp(1rem, 1.4vw, 1.18rem);
+}
+
+.portfolio-intro__progress-wrap {
+  width: min(100%, 35rem);
+  margin-top: clamp(2.5rem, 6vw, 5rem);
+}
+
+.portfolio-intro__progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+  color: var(--fc-slate);
+  font-size: 0.62rem;
+}
+
+.portfolio-intro__progress {
+  height: 3px;
+  overflow: hidden;
+  background: rgb(243 240 234 / 0.14);
+}
+
+.portfolio-intro__progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--fc-accent);
+  box-shadow: 0 0 1.4rem rgb(224 93 82 / 0.75);
+  transform-origin: left;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-intro__portrait {
+  position: relative;
+  display: grid;
+  aspect-ratio: 4 / 5;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgb(243 240 234 / 0.16);
+  border-radius: 50% 50% 1.5rem 1.5rem;
+  background:
+    linear-gradient(155deg, rgb(243 240 234 / 0.08), transparent 45%),
+    var(--fc-panel);
+  box-shadow: 0 2rem 7rem rgb(0 0 0 / 0.34);
+}
+
+.portfolio-intro__portrait::after {
+  position: absolute;
+  inset: 8%;
+  border: 1px solid rgb(224 93 82 / 0.4);
+  border-radius: inherit;
+  content: "";
+}
+
+.portfolio-intro__portrait-orbit {
+  position: absolute;
+  width: 76%;
+  aspect-ratio: 1;
+  border: 1px solid rgb(243 240 234 / 0.16);
+  border-radius: 50%;
+  animation: intro-orbit 8s linear infinite;
+}
+
+.portfolio-intro__portrait-orbit::before {
+  position: absolute;
+  top: 9%;
+  left: 9%;
+  width: 0.75rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--fc-accent);
+  content: "";
+  box-shadow: 0 0 1.5rem var(--fc-accent);
+}
+
+.portfolio-intro__monogram {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(4rem, 9vw, 8rem);
+  font-weight: 700;
+  letter-spacing: -0.09em;
+}
+
+.portfolio-intro__portrait p {
+  position: absolute;
+  z-index: 2;
+  bottom: 7%;
+  margin: 0;
+  color: var(--fc-slate);
+  font-size: 0.6rem;
+}
+
+@keyframes intro-drift {
+  to { transform: translate3d(3%, -2%, 0) scale(1.04); }
+}
+
+@keyframes intro-orbit {
+  to { transform: rotate(360deg); }
+}
+
 .frame-current {
   min-height: 100dvh;
   overflow: clip;
@@ -389,6 +570,9 @@ a {
   color: var(--fc-ink);
   text-align: center;
   transform: translate(-50%, -50%);
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .proof-number > div {
@@ -396,6 +580,14 @@ a {
   align-items: flex-start;
   line-height: 0.72;
   white-space: nowrap;
+  transform-origin: center;
+  transition: transform 650ms cubic-bezier(0.16, 1.45, 0.32, 1);
+}
+
+.proof-number:hover > div,
+.proof-number:focus-visible > div,
+.proof-number:active > div {
+  transform: scale(1.065, 1.1);
 }
 
 .proof-number span {
@@ -410,6 +602,13 @@ a {
   font-family: "IBM Plex Mono", monospace;
   font-size: clamp(2rem, 3.6vw, 4.5rem);
   letter-spacing: 0;
+  transition: transform 650ms cubic-bezier(0.16, 1.45, 0.32, 1);
+}
+
+.proof-number:hover sup,
+.proof-number:focus-visible sup,
+.proof-number:active sup {
+  transform: translate(0.35rem, -0.65rem) rotate(8deg);
 }
 
 .proof-number p {
@@ -517,6 +716,15 @@ a {
   flex-direction: column;
   justify-content: center;
   padding: clamp(4rem, 7vw, 7rem) clamp(2rem, 4.5vw, 4.5rem);
+  outline: none;
+  transform-origin: center right;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proof-band__context:hover,
+.proof-band__context:focus-visible,
+.proof-band__context:active {
+  transform: scale(1.028);
 }
 
 .proof-band__context h2 {
@@ -525,6 +733,16 @@ a {
   font-size: clamp(2.5rem, 4vw, 4.5rem);
   line-height: 0.98;
   letter-spacing: -0.05em;
+  transition:
+    letter-spacing 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proof-band__context:hover h2,
+.proof-band__context:focus-visible h2,
+.proof-band__context:active h2 {
+  letter-spacing: -0.065em;
+  transform: translateX(-0.18rem) scale(1.025);
 }
 
 .proof-band__context > p:not(.section-kicker) {
@@ -610,6 +828,8 @@ a {
   box-shadow: 0 1.35rem 3.5rem rgb(0 0 0 / 0.18);
   cursor: default;
   isolation: isolate;
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transform-style: preserve-3d;
   transition:
     border-color 280ms ease,
     box-shadow 380ms ease,
@@ -630,7 +850,7 @@ a {
 .work-card:focus {
   border-color: rgb(224 93 82 / 0.72);
   box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.32);
-  transform: translateY(-0.45rem);
+  transform: perspective(900px) translateY(-0.45rem) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
 }
 
 .work-card > img {
@@ -1028,6 +1248,15 @@ a {
 }
 
 @media (max-width: 860px) {
+  .portfolio-intro__layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(12rem, 0.5fr);
+    gap: 2rem;
+  }
+
+  .portfolio-intro__portrait {
+    max-height: 56dvh;
+  }
+
   .site-nav {
     height: 4.25rem;
   }
@@ -1144,10 +1373,34 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+
+  .portfolio-intro {
+    display: none;
+  }
 }
 
 
 @media (max-width: 560px) {
+  .portfolio-intro {
+    padding: 1.25rem;
+  }
+
+  .portfolio-intro__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-intro h1 {
+    font-size: clamp(3rem, 15vw, 4.7rem);
+  }
+
+  .portfolio-intro__portrait {
+    display: none;
+  }
+
+  .portfolio-intro__progress-wrap {
+    margin-top: 2.5rem;
+  }
+
   .work-gallery {
     grid-template-columns: 1fr;
   }

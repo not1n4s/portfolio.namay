@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { StructuredData } from "@/components/StructuredData";
+import { PortfolioIntro } from "@/components/portfolio-intro";
 import { ScrollScrub } from "@/components/scroll-scrub/scroll-scrub";
 import { siteAsset } from "@/lib/site-paths";
 import { scrollScrubScenes, scrollScrubTheme } from "@/scroll-scrub-scenes";
@@ -238,7 +239,11 @@ function ProofSection() {
           <circle className="proof-curve__dot proof-curve__dot--three" cx="764" cy="127" r="8" />
         </svg>
 
-        <div className="proof-number">
+        <div
+          aria-label={`${count} million plus accumulated views. Press to interact.`}
+          className="proof-number"
+          tabIndex={0}
+        >
           <div>
             <span aria-hidden="true">{count}M</span>
             <sup>+</sup>
@@ -266,7 +271,11 @@ function ProofSection() {
         </div>
       </div>
 
-      <div className="proof-band__context">
+      <div
+        aria-label="Portfolio proof. Press to bring the story forward."
+        className="proof-band__context"
+        tabIndex={0}
+      >
         <p className="section-kicker">The proof</p>
         <h2>Attention turned into measurable reach</h2>
         <p>
@@ -285,8 +294,10 @@ function ProofSection() {
 
 function Index() {
   return (
-    <main className="frame-current">
-      <StructuredData json={SCHEMA} />
+    <>
+      <PortfolioIntro />
+      <main className="frame-current">
+        <StructuredData json={SCHEMA} />
 
       <header className="site-nav">
         <BrandMark />
@@ -354,6 +365,18 @@ function Index() {
               aria-label={`${work.title}. Estimated CTR ${work.ctr}; estimated impressions ${work.impressions}.`}
               className="work-card"
               key={work.title}
+              onPointerLeave={(event) => {
+                event.currentTarget.style.setProperty("--tilt-x", "0deg");
+                event.currentTarget.style.setProperty("--tilt-y", "0deg");
+              }}
+              onPointerMove={(event) => {
+                if (event.pointerType === "touch") return;
+                const bounds = event.currentTarget.getBoundingClientRect();
+                const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+                const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+                event.currentTarget.style.setProperty("--tilt-x", `${(-y * 5).toFixed(2)}deg`);
+                event.currentTarget.style.setProperty("--tilt-y", `${(x * 7).toFixed(2)}deg`);
+              }}
               tabIndex={0}
             >
               <img
@@ -464,6 +487,7 @@ function Index() {
         <p>YouTube thumbnail designer. Working worldwide.</p>
         <p>Independent portfolio of Namay Prakash.</p>
       </footer>
-    </main>
+      </main>
+    </>
   );
 }
