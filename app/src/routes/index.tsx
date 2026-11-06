@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from "react";
 
 import { StructuredData } from "@/components/StructuredData";
 import { ScrollScrub } from "@/components/scroll-scrub/scroll-scrub";
+import { siteAsset } from "@/lib/site-paths";
 import { scrollScrubScenes, scrollScrubTheme } from "@/scroll-scrub-scenes";
 
 import "../frame-current.css";
 
-const SITE_URL = "https://frame-current-studio.higgsfield.app";
+const SITE_URL = "https://not1n4s.github.io/portfolio.namay";
 
 const SCHEMA = JSON.stringify({
   "@context": "https://schema.org",
@@ -91,7 +92,7 @@ const selectedWork = [
   { title: "Astana Stories", ctr: "15.0%", impressions: "2.05M" },
 ].map((item, index) => ({
   ...item,
-  image: `/assets/work/work-${String(index + 1).padStart(2, "0")}.webp`,
+  image: siteAsset(`assets/work/work-${String(index + 1).padStart(2, "0")}.webp`),
   ctrTrend: buildSparkline(index + 2, 0.76),
   impressionTrend: buildSparkline(index + 7, 0.34),
 }));
@@ -107,19 +108,19 @@ function buildSparkline(seed: number, lift: number) {
 
 const process = [
   {
-    icon: "/assets/icons/concept.svg",
+    icon: siteAsset("assets/icons/concept.svg"),
     index: "01",
     title: "Frame",
     copy: "Find the one visual idea that can survive at feed speed. The concept gets simple before the composition gets loud.",
   },
   {
-    icon: "/assets/icons/composition.svg",
+    icon: siteAsset("assets/icons/composition.svg"),
     index: "02",
     title: "Sharpen",
     copy: "Control the focal point, face scale, contrast, and type hierarchy until the click decision feels immediate.",
   },
   {
-    icon: "/assets/icons/iteration.svg",
+    icon: siteAsset("assets/icons/iteration.svg"),
     index: "03",
     title: "Deliver",
     copy: "Finish the frame for YouTube, check the small-size read, and keep the system adaptable for the next upload.",
@@ -160,7 +161,7 @@ export const Route = createFileRoute("/")({
 function BrandMark() {
   return (
     <a className="brand-mark" href="#opening" aria-label="Namay Prakash home">
-      <img src="/assets/brand/namay-prakash-mark.svg" alt="" role="presentation" />
+      <img src={siteAsset("assets/brand/namay-prakash-mark.svg")} alt="" role="presentation" />
       <span>Namay Prakash</span>
     </a>
   );
@@ -191,16 +192,15 @@ function ProofSection() {
   useEffect(() => {
     if (!isVisible) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setCount(25);
       return;
     }
 
     let animationFrame = 0;
     const duration = 3600;
-    const start = performance.now();
-    setCount(0);
+    let start = 0;
 
     const tick = (now: number) => {
+      if (start === 0) start = now;
       const progress = Math.min(1, (now - start) / duration);
       const eased = 1 - Math.pow(1 - progress, 4);
       setCount(Math.round(eased * 25));
@@ -247,15 +247,15 @@ function ProofSection() {
         </div>
 
         <figure className="proof-thumb proof-thumb--one">
-          <img alt="" height="607" src="/assets/work/work-06.webp" width="1080" />
+          <img alt="" height="607" src={siteAsset("assets/work/work-06.webp")} width="1080" />
           <figcaption>Travel</figcaption>
         </figure>
         <figure className="proof-thumb proof-thumb--two">
-          <img alt="" height="607" src="/assets/work/work-15.webp" width="1080" />
+          <img alt="" height="607" src={siteAsset("assets/work/work-15.webp")} width="1080" />
           <figcaption>Culture</figcaption>
         </figure>
         <figure className="proof-thumb proof-thumb--three">
-          <img alt="" height="607" src="/assets/work/work-17.webp" width="1080" />
+          <img alt="" height="607" src={siteAsset("assets/work/work-17.webp")} width="1080" />
           <figcaption>Explainers</figcaption>
         </figure>
 

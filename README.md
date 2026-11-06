@@ -28,7 +28,7 @@ cd app
 bun run build
 ```
 
-## Put the source on GitHub
+## GitHub repository
 
 Run these commands from the folder containing this README:
 
@@ -37,14 +37,16 @@ git init
 git add .
 git commit -m "Initial Namay Prakash portfolio"
 git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git remote add origin https://github.com/not1n4s/portfolio.namay.git
 git push -u origin main
 ```
 
-The included GitHub workflow validates the project on pushes to `main`. It was exported from the Higgsfield project and currently names a Higgsfield-specific runner; change `runs-on: arc-runners-frontend` to `runs-on: ubuntu-latest` if your GitHub repository does not provide that runner.
+The included workflows validate the project and publish the static portfolio on every push to `main`.
 
-## Hosting note
+## GitHub Pages
 
-This is a TanStack Start server-rendered application configured for Cloudflare Workers. GitHub is suitable for storing the source, but GitHub Pages is not the correct runtime for this version. Deploy it through the existing Higgsfield project or a compatible Cloudflare Workers setup.
+The GitHub Pages build enables static prerendering and serves the site from the repository base path. In the repository, open **Settings → Pages** and select **GitHub Actions** as the source.
 
-Current hosted version: https://frame-current-studio.higgsfield.app
+GitHub Pages URL: https://not1n4s.github.io/portfolio.namay/
+
+Existing hosted version: https://frame-current-studio.higgsfield.app

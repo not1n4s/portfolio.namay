@@ -20,8 +20,10 @@ const QUANTA_ICONS_SHIM = fileURLToPath(
 
 export default defineConfig(({ command, mode }) => {
   const designInspectorEnabled = process.env.HF_DESIGN_INSPECTOR === "1" || mode === "design";
+  const githubPages = process.env.GITHUB_PAGES === "true";
 
   return {
+    base: githubPages ? "/portfolio.namay/" : "/",
     // fsevents can miss edits under some setups (bun-launched dev, synced/virtual
     // dirs), leaving HMR dead so changes only appear after a manual restart.
     // Polling the watcher makes file changes reliably trigger HMR / SSR reload.
@@ -99,6 +101,21 @@ export default defineConfig(({ command, mode }) => {
       // inside effects/handlers, or guarded with `typeof window !== "undefined"`.
       tanstackStart({
         server: { entry: "server" },
+        ...(githubPages
+          ? {
+              prerender: {
+                enabled: true,
+                autoStaticPathsDiscovery: false,
+                failOnError: true,
+              },
+              pages: [
+                {
+                  path: "/",
+                  prerender: { enabled: true, outputPath: "/index.html" },
+                },
+              ],
+            }
+          : {}),
       }),
       higgsfieldDesignInspectorVitePlugin(designInspectorEnabled),
       react({

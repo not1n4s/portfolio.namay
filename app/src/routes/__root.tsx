@@ -12,10 +12,11 @@ import { useEffect, type ReactNode } from "react";
 import appMetaJson from "../app-meta.json";
 import appCss from "../styles.css?url";
 import { reportHiggsfieldError } from "../lib/higgsfield-error-reporting";
+import { siteAsset } from "../lib/site-paths";
 
 declare const __HF_DESIGN_INSPECTOR__: boolean;
 
-const SITE_URL = "https://frame-current-studio.higgsfield.app";
+const SITE_URL = "https://not1n4s.github.io/portfolio.namay";
 const DEFAULT_TITLE = "Frame Current | YouTube Thumbnails";
 const DEFAULT_DESCRIPTION =
   "YouTube thumbnail design portfolio with two years of experience and 25M+ accumulated views.";
@@ -66,11 +67,11 @@ function buildHead(meta: AppMeta) {
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "canonical", href: SITE_URL },
-      { rel: "manifest", href: "/site.webmanifest" },
-      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png" },
-      { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16.png" },
-      { rel: "shortcut icon", href: "/favicon.ico" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: siteAsset("site.webmanifest") },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: siteAsset("favicon-32.png") },
+      { rel: "icon", type: "image/png", sizes: "16x16", href: siteAsset("favicon-16.png") },
+      { rel: "shortcut icon", href: siteAsset("favicon.ico") },
+      { rel: "apple-touch-icon", href: siteAsset("apple-touch-icon.png") },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" as const },
       ...(favicon ? [{ rel: "icon", href: favicon }] : []),
