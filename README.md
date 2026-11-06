@@ -4,9 +4,8 @@ This is the complete source export of Namay Prakash's portfolio website.
 
 ## Before publishing
 
-Replace the two clearly marked placeholders in `app/src/routes/index.tsx`:
+Namay's business email is configured in `app/src/routes/index.tsx`. Replace the remaining LinkedIn placeholder when the profile URL is available:
 
-- `your-email@example.com`
 - `linkedin.com/in/your-profile`
 
 ## Run locally

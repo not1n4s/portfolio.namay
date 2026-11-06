@@ -473,15 +473,19 @@ function Index() {
         <div className="contact-section__texture" aria-hidden="true" />
         <p className="section-kicker">Start a conversation</p>
         <h2>Make the next upload impossible to miss</h2>
-        <div className="contact-options" aria-label="Contact placeholders">
-          <div className="contact-option">
+        <div className="contact-options" aria-label="Contact options">
+          <a
+            aria-label="Email Namay Prakash at namaycreations@gmail.com"
+            className="contact-option"
+            href="mailto:namaycreations@gmail.com"
+          >
             <span className="contact-option__icon" aria-hidden="true">@</span>
             <div>
               <p>Business email</p>
-              <strong>your-email@example.com</strong>
+              <strong>namaycreations@gmail.com</strong>
             </div>
-            <span className="contact-option__status">Replace placeholder</span>
-          </div>
+            <span className="contact-option__status">Email Namay</span>
+          </a>
           <div className="contact-option">
             <span className="contact-option__icon" aria-hidden="true">in</span>
             <div>
@@ -492,7 +496,7 @@ function Index() {
           </div>
         </div>
         <p id="contact-note" className="contact-note">
-          Replace these two placeholders with Namay’s business email and LinkedIn URL before launch.
+          Use the business email to start a project. Namay’s LinkedIn URL will be added when available.
         </p>
       </section>
 

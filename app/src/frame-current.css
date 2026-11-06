@@ -1181,6 +1181,7 @@ body.intro-lock {
   border-radius: 1rem;
   background: rgb(16 19 26 / 0.54);
   text-align: left;
+  text-decoration: none;
   backdrop-filter: blur(14px);
   transition:
     border-color 260ms ease,
