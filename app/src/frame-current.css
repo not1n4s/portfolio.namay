@@ -139,7 +139,7 @@ body.intro-lock {
   background: var(--fc-accent);
   box-shadow: 0 0 1.4rem rgb(224 93 82 / 0.75);
   transform-origin: left;
-  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 140ms linear;
 }
 
 .portfolio-intro__portrait {
@@ -151,13 +151,27 @@ body.intro-lock {
   border: 1px solid rgb(243 240 234 / 0.16);
   border-radius: 50% 50% 1.5rem 1.5rem;
   background:
+    radial-gradient(circle at 50% 28%, rgb(224 93 82 / 0.2), transparent 35%),
     linear-gradient(155deg, rgb(243 240 234 / 0.08), transparent 45%),
     var(--fc-panel);
   box-shadow: 0 2rem 7rem rgb(0 0 0 / 0.34);
+  isolation: isolate;
+}
+
+.portfolio-intro__portrait::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--fc-panel) 0%, rgb(23 27 36 / 0.72) 8%, transparent 26%),
+    linear-gradient(90deg, rgb(23 27 36 / 0.22), transparent 20% 80%, rgb(23 27 36 / 0.22));
+  content: "";
+  pointer-events: none;
 }
 
 .portfolio-intro__portrait::after {
   position: absolute;
+  z-index: 3;
   inset: 8%;
   border: 1px solid rgb(224 93 82 / 0.4);
   border-radius: inherit;
@@ -166,6 +180,7 @@ body.intro-lock {
 
 .portfolio-intro__portrait-orbit {
   position: absolute;
+  z-index: 0;
   width: 76%;
   aspect-ratio: 1;
   border: 1px solid rgb(243 240 234 / 0.16);
@@ -185,17 +200,23 @@ body.intro-lock {
   box-shadow: 0 0 1.5rem var(--fc-accent);
 }
 
-.portfolio-intro__monogram {
-  position: relative;
+.portfolio-intro__portrait-image {
+  position: absolute;
   z-index: 1;
-  font-size: clamp(4rem, 9vw, 8rem);
-  font-weight: 700;
-  letter-spacing: -0.09em;
+  bottom: -1.5%;
+  left: 50%;
+  width: 112%;
+  height: 98%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: saturate(0.92) contrast(1.02) drop-shadow(0 1.7rem 2.6rem rgb(0 0 0 / 0.26));
+  transform: translateX(-50%);
+  animation: intro-portrait-arrive 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .portfolio-intro__portrait p {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   bottom: 7%;
   margin: 0;
   color: var(--fc-slate);
@@ -208,6 +229,17 @@ body.intro-lock {
 
 @keyframes intro-orbit {
   to { transform: rotate(360deg); }
+}
+
+@keyframes intro-portrait-arrive {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 3%) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
 }
 
 .frame-current {

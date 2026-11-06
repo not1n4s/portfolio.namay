@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { siteAsset } from "@/lib/site-paths";
 
 const MINIMUM_INTRO_MS = 6000;
+const COMPLETION_HOLD_MS = 900;
 
 function preloadImage(source: string) {
   return new Promise<void>((resolve) => {
@@ -54,22 +55,35 @@ export function PortfolioIntro() {
 
     document.body.classList.add("intro-lock");
     const startedAt = performance.now();
-    let completedAssets = 0;
     let leaveTimer = 0;
     let hideTimer = 0;
+    let progressFrame = 0;
+    let lastProgress = 4;
     let cancelled = false;
+
+    const animateProgress = (now: number) => {
+      const elapsed = Math.min(1, (now - startedAt) / MINIMUM_INTRO_MS);
+      const eased = 1 - Math.pow(1 - elapsed, 1.45);
+      const nextProgress = Math.min(99, Math.round(4 + eased * 95));
+      if (nextProgress !== lastProgress) {
+        lastProgress = nextProgress;
+        setProgress(nextProgress);
+      }
+
+      if (elapsed < 1 && !cancelled) {
+        progressFrame = window.requestAnimationFrame(animateProgress);
+      }
+    };
+
+    progressFrame = window.requestAnimationFrame(animateProgress);
 
     const jobs = [
       preloadImage(siteAsset("assets/world/frame-current-poster.png")),
       preloadImage(siteAsset("assets/work/work-01.webp")),
       preloadImage(siteAsset("assets/brand/namay-prakash-mark.svg")),
+      preloadImage(siteAsset("assets/brand/namay-prakash-portrait.png")),
       preloadVideoMetadata(siteAsset("assets/world/frame-current.mp4")),
-    ].map((job) =>
-      job.finally(() => {
-        completedAssets += 1;
-        if (!cancelled) setProgress(8 + Math.round((completedAssets / 4) * 82));
-      }),
-    );
+    ];
 
     const minimumDelay = new Promise<void>((resolve) => {
       window.setTimeout(resolve, Math.max(0, MINIMUM_INTRO_MS - (performance.now() - startedAt)));
@@ -77,18 +91,20 @@ export function PortfolioIntro() {
 
     void Promise.allSettled([...jobs, minimumDelay]).then(() => {
       if (cancelled) return;
+      window.cancelAnimationFrame(progressFrame);
       setProgress(100);
       leaveTimer = window.setTimeout(() => {
         setPhase("leaving");
         document.body.classList.remove("intro-lock");
         hideTimer = window.setTimeout(() => setPhase("hidden"), 900);
-      }, 260);
+      }, COMPLETION_HOLD_MS);
     });
 
     return () => {
       cancelled = true;
       window.clearTimeout(leaveTimer);
       window.clearTimeout(hideTimer);
+      window.cancelAnimationFrame(progressFrame);
       document.body.classList.remove("intro-lock");
     };
   }, []);
@@ -132,7 +148,11 @@ export function PortfolioIntro() {
 
         <div className="portfolio-intro__portrait" aria-label="Namay portrait frame">
           <div className="portfolio-intro__portrait-orbit" aria-hidden="true" />
-          <span className="portfolio-intro__monogram">NP</span>
+          <img
+            alt="Namay Prakash"
+            className="portfolio-intro__portrait-image"
+            src={siteAsset("assets/brand/namay-prakash-portrait.png")}
+          />
           <p>Namay Prakash</p>
         </div>
       </div>
