@@ -38,6 +38,11 @@ jobs:
           GITHUB_PAGES: "true"
         run: bun run build
 
+      - name: Add GitHub Pages fallbacks
+        run: |
+          cp dist/client/index.html dist/client/404.html
+          touch dist/client/.nojekyll
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
