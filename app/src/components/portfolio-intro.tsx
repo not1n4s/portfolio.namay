@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 
 import { siteAsset } from "@/lib/site-paths";
 
-const INTRO_SESSION_KEY = "namay-portfolio-intro-seen";
-const MINIMUM_INTRO_MS = 1400;
+const MINIMUM_INTRO_MS = 6000;
 
 function preloadImage(source: string) {
   return new Promise<void>((resolve) => {
@@ -47,9 +46,8 @@ export function PortfolioIntro() {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const hasPlayed = window.sessionStorage.getItem(INTRO_SESSION_KEY) === "true";
 
-    if (reducedMotion || hasPlayed) {
+    if (reducedMotion) {
       const skipFrame = window.requestAnimationFrame(() => setPhase("hidden"));
       return () => window.cancelAnimationFrame(skipFrame);
     }
@@ -82,7 +80,6 @@ export function PortfolioIntro() {
       setProgress(100);
       leaveTimer = window.setTimeout(() => {
         setPhase("leaving");
-        window.sessionStorage.setItem(INTRO_SESSION_KEY, "true");
         document.body.classList.remove("intro-lock");
         hideTimer = window.setTimeout(() => setPhase("hidden"), 900);
       }, 260);
