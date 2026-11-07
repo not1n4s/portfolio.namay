@@ -120,14 +120,26 @@ const selectedWork: WorkItem[] = [
 }));
 
 const creators = [
-  { name: "Travel with AK", url: "https://www.youtube.com/@travelwithak", code: "AK" },
-  { name: "Krrish World", url: "https://www.youtube.com/@KrrishsWorld", code: "KW" },
+  {
+    name: "Travel with AK",
+    url: "https://www.youtube.com/@travelwithak",
+    image: siteAsset("assets/creators/travel-with-ak.jpg"),
+  },
+  {
+    name: "Krrish World",
+    url: "https://www.youtube.com/@KrrishsWorld",
+    image: siteAsset("assets/creators/krrish-world.jpg"),
+  },
   {
     name: "Dr. Biswaroop Roy Chowdhury",
     url: "https://www.youtube.com/@drbiswarooproychowdhury",
-    code: "BRC",
+    image: siteAsset("assets/creators/dr-biswaroop-roy-chowdhury.jpg"),
   },
-  { name: "Altaf Musafir", url: "https://www.youtube.com/@altafmusafir", code: "AM" },
+  {
+    name: "Altaf Musafir",
+    url: "https://www.youtube.com/@altafmusafir",
+    image: siteAsset("assets/creators/altaf-musafir.jpg"),
+  },
 ] as const;
 
 function buildSparkline(seed: number, lift: number) {
@@ -317,7 +329,9 @@ function WorkedForSection() {
                   tabIndex={group === 1 ? -1 : undefined}
                   target="_blank"
                 >
-                  <span className="creator-capsule__code" aria-hidden="true">{creator.code}</span>
+                  <span className="creator-capsule__avatar" aria-hidden="true">
+                    <img alt="" height="128" loading="lazy" src={creator.image} width="128" />
+                  </span>
                   <span>{creator.name}</span>
                   <span className="creator-capsule__arrow" aria-hidden="true">↗</span>
                 </a>
