@@ -294,9 +294,9 @@ function BrandMark() {
 function ContactBubble() {
   return (
     <a
-      aria-label="Email Namay Prakash"
+      aria-label="Go to Namay Prakash's contact details"
       className="contact-bubble"
-      href="mailto:namaycreations@gmail.com"
+      href="#contact"
     >
       <span aria-hidden="true">@</span>
       <span>Let’s talk</span>
