@@ -92,6 +92,9 @@ interface Controller {
 }
 
 type ThemeStyle = CSSProperties & Record<`--ss-${string}`, string | number>;
+type BandStyle = CSSProperties & {
+  "--ss-mobile-band-height": string;
+};
 
 const clamp = (value: number, min = 0, max = 1) =>
   Math.min(max, Math.max(min, value));
@@ -650,8 +653,10 @@ export function ScrollScrub({
 
       <div className="scroll-scrub__story">
         {segments.map((segment) => {
-          const bandStyle: CSSProperties = {
-            minHeight: `${Math.max(segment.weight, 0.2) * 100}dvh`,
+          const bandHeight = Math.max(segment.weight, 0.2) * 100;
+          const bandStyle: BandStyle = {
+            minHeight: `${bandHeight}dvh`,
+            "--ss-mobile-band-height": `${bandHeight}svh`,
           };
 
           if (segment.kind === "connector") {

@@ -1797,7 +1797,10 @@ body.intro-lock {
   }
 
   .site-nav {
-    height: 4.25rem;
+    height: calc(4.25rem + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    padding-right: max(var(--fc-gutter), env(safe-area-inset-right));
+    padding-left: max(var(--fc-gutter), env(safe-area-inset-left));
   }
 
   .brand-mark span {
@@ -1814,6 +1817,7 @@ body.intro-lock {
 
   .frame-journey .scroll-scrub__chapter-pin {
     align-items: flex-end;
+    padding-top: calc(5.75rem + env(safe-area-inset-top));
   }
 
   .frame-journey .scroll-scrub__copy,
@@ -1822,15 +1826,28 @@ body.intro-lock {
   }
 
   .frame-journey .scroll-scrub__title {
-    font-size: clamp(2.8rem, 13vw, 4.8rem);
+    font-size: clamp(2.55rem, 12vw, 4.8rem);
+  }
+
+  .journey-overlays {
+    top: 100vh;
+    top: 100svh;
+  }
+
+  .journey-chapter,
+  .journey-chapter__pin {
+    min-height: 100vh;
+    min-height: 100svh;
   }
 
   .journey-chapter__pin,
   .journey-chapter[data-align="right"] .journey-chapter__pin {
     align-items: flex-end;
     justify-content: flex-start;
-    padding-top: 6rem;
-    padding-bottom: 4rem;
+    padding-top: calc(5.75rem + env(safe-area-inset-top));
+    padding-right: max(var(--fc-gutter), env(safe-area-inset-right));
+    padding-bottom: max(2.5rem, calc(2rem + env(safe-area-inset-bottom)));
+    padding-left: max(var(--fc-gutter), env(safe-area-inset-left));
   }
 
   .journey-chapter h2 {
@@ -1963,13 +1980,13 @@ body.intro-lock {
   }
 
   .contact-bubble {
-    right: 0.9rem;
-    bottom: 0.9rem;
-    width: 4.75rem;
+    right: max(0.85rem, env(safe-area-inset-right));
+    bottom: max(0.85rem, env(safe-area-inset-bottom));
+    width: 3.65rem;
   }
 
   .contact-bubble > span:last-child {
-    font-size: 0.46rem;
+    display: none;
   }
 
   .creators-section__heading h2 {
@@ -2041,6 +2058,80 @@ body.intro-lock {
 
   .work-card__metrics div {
     padding-top: 0.4rem;
+  }
+}
+
+@media (max-width: 380px), (max-width: 860px) and (max-height: 700px) {
+  .frame-journey .scroll-scrub__chapter-pin,
+  .journey-chapter__pin,
+  .journey-chapter[data-align="right"] .journey-chapter__pin {
+    padding-top: calc(5rem + env(safe-area-inset-top));
+    padding-bottom: max(1.25rem, calc(0.75rem + env(safe-area-inset-bottom)));
+  }
+
+  .frame-journey .scroll-scrub__title,
+  .journey-chapter h2 {
+    font-size: clamp(2.15rem, 11.5vw, 3.35rem);
+    line-height: 0.92;
+  }
+
+  .journey-chapter p:not(.journey-eyebrow) {
+    margin-top: 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .journey-eyebrow {
+    margin-bottom: 0.7rem;
+    font-size: 0.68rem;
+  }
+
+  .contact-bubble {
+    width: 3.65rem;
+  }
+
+  .contact-bubble > span:first-child {
+    font-size: 1.1rem;
+  }
+
+  .contact-bubble > span:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) and (max-height: 560px) and (orientation: landscape) {
+  .frame-journey .scroll-scrub__chapter-pin,
+  .journey-chapter__pin,
+  .journey-chapter[data-align="right"] .journey-chapter__pin {
+    padding-top: calc(4.6rem + env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .frame-journey .scroll-scrub__copy,
+  .journey-chapter__copy {
+    width: min(100%, 34rem);
+  }
+
+  .frame-journey .scroll-scrub__title,
+  .journey-chapter h2 {
+    max-width: 18ch;
+    font-size: clamp(2rem, 6.5vw, 3.2rem);
+  }
+
+  .journey-chapter p:not(.journey-eyebrow) {
+    max-width: 52ch;
+    margin-top: 0.65rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .journey-eyebrow {
+    margin-bottom: 0.45rem;
+    font-size: 0.62rem;
+  }
+
+  .contact-bubble {
+    width: 3.5rem;
   }
 }
 
