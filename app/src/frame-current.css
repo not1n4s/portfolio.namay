@@ -1825,6 +1825,20 @@ body.intro-lock {
     width: 100%;
   }
 
+  .frame-journey .scroll-scrub__copy::before,
+  .journey-chapter__copy::before {
+    display: none;
+  }
+
+  .frame-journey .scroll-scrub__kicker,
+  .frame-journey .scroll-scrub__title,
+  .frame-journey .scroll-scrub__body,
+  .journey-chapter__copy {
+    text-shadow:
+      0 2px 4px rgb(0 0 0 / 0.78),
+      0 8px 28px rgb(0 0 0 / 0.88);
+  }
+
   .frame-journey .scroll-scrub__title {
     font-size: clamp(2.55rem, 12vw, 4.8rem);
   }
@@ -1852,11 +1866,6 @@ body.intro-lock {
 
   .journey-chapter h2 {
     font-size: clamp(2.65rem, 12vw, 4.8rem);
-  }
-
-  .journey-chapter__copy::before {
-    inset: -4rem -2rem;
-    background: linear-gradient(to top, var(--fc-ink), rgb(16 19 26 / 0.82), transparent);
   }
 
   .proof-band {
