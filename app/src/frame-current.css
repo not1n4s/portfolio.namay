@@ -1870,7 +1870,8 @@ body.intro-lock {
   }
 
   .proof-number span {
-    font-size: clamp(8rem, 31vw, 15rem);
+    display: block;
+    font-size: clamp(2.85rem, 14vw, 7.25rem);
   }
 
   .proof-thumb {
@@ -2158,6 +2159,11 @@ body.intro-lock {
 
   .proof-number {
     top: 48%;
+    width: calc(100% - 2rem);
+  }
+
+  .proof-number > div {
+    width: 100%;
   }
 
   .proof-number__more {

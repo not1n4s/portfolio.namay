@@ -3,14 +3,27 @@ import { useEffect, useState } from "react";
 import { siteAsset } from "@/lib/site-paths";
 
 const MINIMUM_INTRO_MS = 6000;
-const COMPLETION_HOLD_MS = 900;
+const COMPLETION_HOLD_MS = 400;
+const ASSET_TIMEOUT_MS = 3500;
+const INTRO_FAILSAFE_MS = MINIMUM_INTRO_MS + 250;
+const LEAVE_ANIMATION_MS = 900;
 
 function preloadImage(source: string) {
   return new Promise<void>((resolve) => {
     const image = new Image();
-    const finish = () => resolve();
+    let timeout = 0;
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(timeout);
+      image.removeEventListener("load", finish);
+      image.removeEventListener("error", finish);
+      resolve();
+    };
     image.addEventListener("load", finish, { once: true });
     image.addEventListener("error", finish, { once: true });
+    timeout = window.setTimeout(finish, ASSET_TIMEOUT_MS);
     image.src = source;
     if (image.complete) finish();
   });
@@ -57,9 +70,25 @@ export function PortfolioIntro() {
     const startedAt = performance.now();
     let leaveTimer = 0;
     let hideTimer = 0;
+    let failsafeTimer = 0;
     let progressFrame = 0;
     let lastProgress = 4;
     let cancelled = false;
+    let completionStarted = false;
+
+    const completeIntro = () => {
+      if (cancelled || completionStarted) return;
+      completionStarted = true;
+      window.clearTimeout(failsafeTimer);
+      window.cancelAnimationFrame(progressFrame);
+      setProgress(100);
+      leaveTimer = window.setTimeout(() => {
+        if (cancelled) return;
+        setPhase("leaving");
+        document.body.classList.remove("intro-lock");
+        hideTimer = window.setTimeout(() => setPhase("hidden"), LEAVE_ANIMATION_MS);
+      }, COMPLETION_HOLD_MS);
+    };
 
     const animateProgress = (now: number) => {
       const elapsed = Math.min(1, (now - startedAt) / MINIMUM_INTRO_MS);
@@ -89,21 +118,14 @@ export function PortfolioIntro() {
       window.setTimeout(resolve, Math.max(0, MINIMUM_INTRO_MS - (performance.now() - startedAt)));
     });
 
-    void Promise.allSettled([...jobs, minimumDelay]).then(() => {
-      if (cancelled) return;
-      window.cancelAnimationFrame(progressFrame);
-      setProgress(100);
-      leaveTimer = window.setTimeout(() => {
-        setPhase("leaving");
-        document.body.classList.remove("intro-lock");
-        hideTimer = window.setTimeout(() => setPhase("hidden"), 900);
-      }, COMPLETION_HOLD_MS);
-    });
+    void Promise.allSettled([...jobs, minimumDelay]).then(completeIntro);
+    failsafeTimer = window.setTimeout(completeIntro, INTRO_FAILSAFE_MS);
 
     return () => {
       cancelled = true;
       window.clearTimeout(leaveTimer);
       window.clearTimeout(hideTimer);
+      window.clearTimeout(failsafeTimer);
       window.cancelAnimationFrame(progressFrame);
       document.body.classList.remove("intro-lock");
     };
