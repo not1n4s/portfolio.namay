@@ -333,6 +333,8 @@ function WorkedForSection() {
     let dragStartScroll = 0;
     let dragAxis: "pending" | "horizontal" | "vertical" = "pending";
     let suppressClickUntil = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
 
     const measure = () => {
       const previousWidth = segmentWidth;
@@ -354,8 +356,8 @@ function WorkedForSection() {
       }
     };
 
-    const pauseAfterInteraction = () => {
-      resumeAt = performance.now() + 1800;
+    const pauseAfterInteraction = (delay = 1800) => {
+      resumeAt = performance.now() + delay;
     };
 
     const tick = (now: number) => {
@@ -376,6 +378,7 @@ function WorkedForSection() {
     };
 
     const onPointerDown = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
       pointerDown = true;
       dragStartX = event.clientX;
       dragStartY = event.clientY;
@@ -386,6 +389,7 @@ function WorkedForSection() {
     };
 
     const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
       if (!pointerDown) return;
       const deltaX = event.clientX - dragStartX;
       const deltaY = event.clientY - dragStartY;
@@ -403,6 +407,7 @@ function WorkedForSection() {
     };
 
     const onPointerUp = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
       pointerDown = false;
       pauseAfterInteraction();
       delete carousel.dataset.dragging;
@@ -411,6 +416,30 @@ function WorkedForSection() {
       }
       normalizeLoop();
     };
+    const onTouchStart = (event: TouchEvent) => {
+      if (event.touches.length !== 1) return;
+      pointerDown = true;
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      pauseAfterInteraction(2600);
+      carousel.dataset.dragging = "true";
+    };
+    const onTouchMove = (event: TouchEvent) => {
+      if (!pointerDown || event.touches.length !== 1) return;
+      const deltaX = event.touches[0].clientX - touchStartX;
+      const deltaY = event.touches[0].clientY - touchStartY;
+      if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        suppressClickUntil = performance.now() + 600;
+      }
+      pauseAfterInteraction(2600);
+    };
+    const onTouchEnd = () => {
+      pointerDown = false;
+      pauseAfterInteraction(2600);
+      delete carousel.dataset.dragging;
+      normalizeLoop();
+    };
+    const onWheel = () => pauseAfterInteraction();
     const onClickCapture = (event: MouseEvent) => {
       if (performance.now() < suppressClickUntil) {
         event.preventDefault();
@@ -452,12 +481,16 @@ function WorkedForSection() {
     carousel.addEventListener("pointermove", onPointerMove, { passive: false });
     carousel.addEventListener("pointerup", onPointerUp, { passive: true });
     carousel.addEventListener("pointercancel", onPointerUp, { passive: true });
+    carousel.addEventListener("touchstart", onTouchStart, { passive: true });
+    carousel.addEventListener("touchmove", onTouchMove, { passive: true });
+    carousel.addEventListener("touchend", onTouchEnd, { passive: true });
+    carousel.addEventListener("touchcancel", onTouchEnd, { passive: true });
     carousel.addEventListener("click", onClickCapture, true);
     carousel.addEventListener("mouseenter", onMouseEnter);
     carousel.addEventListener("mouseleave", onMouseLeave);
     carousel.addEventListener("focusin", onFocusIn);
     carousel.addEventListener("focusout", onFocusOut);
-    carousel.addEventListener("wheel", pauseAfterInteraction, { passive: true });
+    carousel.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("resize", measure);
     animationFrame = window.requestAnimationFrame(tick);
 
@@ -468,12 +501,16 @@ function WorkedForSection() {
       carousel.removeEventListener("pointermove", onPointerMove);
       carousel.removeEventListener("pointerup", onPointerUp);
       carousel.removeEventListener("pointercancel", onPointerUp);
+      carousel.removeEventListener("touchstart", onTouchStart);
+      carousel.removeEventListener("touchmove", onTouchMove);
+      carousel.removeEventListener("touchend", onTouchEnd);
+      carousel.removeEventListener("touchcancel", onTouchEnd);
       carousel.removeEventListener("click", onClickCapture, true);
       carousel.removeEventListener("mouseenter", onMouseEnter);
       carousel.removeEventListener("mouseleave", onMouseLeave);
       carousel.removeEventListener("focusin", onFocusIn);
       carousel.removeEventListener("focusout", onFocusOut);
-      carousel.removeEventListener("wheel", pauseAfterInteraction);
+      carousel.removeEventListener("wheel", onWheel);
       window.removeEventListener("resize", measure);
       delete carousel.dataset.dragging;
     };
@@ -1053,17 +1090,23 @@ function Index() {
             </div>
             <span className="contact-option__status">Email Namay</span>
           </a>
-          <div className="contact-option">
-            <span className="contact-option__icon" aria-hidden="true">in</span>
+          <a
+            aria-label="Follow nexoraunfiltered on Instagram"
+            className="contact-option"
+            href="https://www.instagram.com/nexoraunfiltered/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <span className="contact-option__icon" aria-hidden="true">IG</span>
             <div>
-              <p>LinkedIn</p>
-              <strong>linkedin.com/in/your-profile</strong>
+              <p>Socials</p>
+              <strong>@nexoraunfiltered</strong>
             </div>
-            <span className="contact-option__status">Replace placeholder</span>
-          </div>
+            <span className="contact-option__status">Open Instagram</span>
+          </a>
         </div>
         <p id="contact-note" className="contact-note">
-          Use the business email to start a project. Namay’s LinkedIn URL will be added when available.
+          Use the business email to start a project, or follow Namay on Instagram.
         </p>
       </section>
 
