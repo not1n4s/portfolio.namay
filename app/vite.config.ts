@@ -101,7 +101,9 @@ export default defineConfig(({ command, mode }) => {
       // localStorage, navigator) during render or at module top level — only
       // inside effects/handlers, or guarded with `typeof window !== "undefined"`.
       tanstackStart({
-        server: { entry: "server" },
+        // Static hosts only need Start's default entry while prerendering.
+        // The custom Workers entry remains available for Higgsfield's runtime.
+        ...(!staticHosting ? { server: { entry: "server" } } : {}),
         ...(staticHosting
           ? {
               prerender: {

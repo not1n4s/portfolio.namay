@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://namaycreations.vercel.app/sitemap.xml
