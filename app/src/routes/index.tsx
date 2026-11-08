@@ -305,18 +305,197 @@ function ContactBubble() {
 }
 
 function WorkedForSection() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const track = carousel.querySelector<HTMLElement>(".creator-carousel__track");
+    const groups = track
+      ? [...track.querySelectorAll<HTMLElement>(".creator-carousel__group")]
+      : [];
+    if (!track || groups.length < 3) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hoverCapable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    let animationFrame = 0;
+    let lastFrame = performance.now();
+    let resumeAt = 0;
+    let segmentWidth = 0;
+    let segmentStart = 0;
+    let pointerDown = false;
+    let hovered = false;
+    let focused = false;
+    let visible = true;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragStartScroll = 0;
+    let dragAxis: "pending" | "horizontal" | "vertical" = "pending";
+    let suppressClickUntil = 0;
+
+    const measure = () => {
+      const previousWidth = segmentWidth;
+      const previousStart = segmentStart;
+      const previousOffset = previousWidth
+        ? (carousel.scrollLeft - previousStart) / previousWidth
+        : 0;
+      segmentWidth = groups[1].offsetLeft - groups[0].offsetLeft;
+      segmentStart = groups[1].offsetLeft;
+      carousel.scrollLeft = segmentStart + previousOffset * segmentWidth;
+    };
+
+    const normalizeLoop = () => {
+      if (!segmentWidth) return;
+      if (carousel.scrollLeft >= groups[2].offsetLeft) {
+        carousel.scrollLeft -= segmentWidth;
+      } else if (carousel.scrollLeft <= groups[0].offsetLeft + 1) {
+        carousel.scrollLeft += segmentWidth;
+      }
+    };
+
+    const pauseAfterInteraction = () => {
+      resumeAt = performance.now() + 1800;
+    };
+
+    const tick = (now: number) => {
+      const elapsed = Math.min(now - lastFrame, 64);
+      lastFrame = now;
+      if (
+        !reducedMotion &&
+        visible &&
+        !pointerDown &&
+        !hovered &&
+        !focused &&
+        now >= resumeAt
+      ) {
+        carousel.scrollLeft += elapsed * 0.038;
+        normalizeLoop();
+      }
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      pointerDown = true;
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      dragStartScroll = carousel.scrollLeft;
+      dragAxis = "pending";
+      pauseAfterInteraction();
+      carousel.dataset.dragging = "true";
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (!pointerDown) return;
+      const deltaX = event.clientX - dragStartX;
+      const deltaY = event.clientY - dragStartY;
+      if (dragAxis === "pending") {
+        if (Math.hypot(deltaX, deltaY) < 7) return;
+        dragAxis = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
+        if (dragAxis === "horizontal") {
+          carousel.setPointerCapture(event.pointerId);
+        }
+      }
+      if (dragAxis !== "horizontal") return;
+      event.preventDefault();
+      carousel.scrollLeft = dragStartScroll - deltaX;
+      suppressClickUntil = performance.now() + 500;
+    };
+
+    const onPointerUp = (event: PointerEvent) => {
+      pointerDown = false;
+      pauseAfterInteraction();
+      delete carousel.dataset.dragging;
+      if (carousel.hasPointerCapture(event.pointerId)) {
+        carousel.releasePointerCapture(event.pointerId);
+      }
+      normalizeLoop();
+    };
+    const onClickCapture = (event: MouseEvent) => {
+      if (performance.now() < suppressClickUntil) {
+        event.preventDefault();
+        event.stopPropagation();
+        (event.target as HTMLElement | null)?.blur?.();
+        focused = false;
+      }
+    };
+    const onMouseEnter = () => {
+      if (hoverCapable) hovered = true;
+    };
+    const onMouseLeave = () => {
+      if (hoverCapable) {
+        hovered = false;
+        pauseAfterInteraction();
+      }
+    };
+    const onFocusIn = () => {
+      focused = true;
+    };
+    const onFocusOut = (event: FocusEvent) => {
+      if (!carousel.contains(event.relatedTarget as Node | null)) {
+        focused = false;
+        pauseAfterInteraction();
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        lastFrame = performance.now();
+      },
+      { threshold: 0.05 },
+    );
+
+    measure();
+    observer.observe(carousel);
+    carousel.addEventListener("pointerdown", onPointerDown, { passive: true });
+    carousel.addEventListener("pointermove", onPointerMove, { passive: false });
+    carousel.addEventListener("pointerup", onPointerUp, { passive: true });
+    carousel.addEventListener("pointercancel", onPointerUp, { passive: true });
+    carousel.addEventListener("click", onClickCapture, true);
+    carousel.addEventListener("mouseenter", onMouseEnter);
+    carousel.addEventListener("mouseleave", onMouseLeave);
+    carousel.addEventListener("focusin", onFocusIn);
+    carousel.addEventListener("focusout", onFocusOut);
+    carousel.addEventListener("wheel", pauseAfterInteraction, { passive: true });
+    window.addEventListener("resize", measure);
+    animationFrame = window.requestAnimationFrame(tick);
+
+    return () => {
+      observer.disconnect();
+      window.cancelAnimationFrame(animationFrame);
+      carousel.removeEventListener("pointerdown", onPointerDown);
+      carousel.removeEventListener("pointermove", onPointerMove);
+      carousel.removeEventListener("pointerup", onPointerUp);
+      carousel.removeEventListener("pointercancel", onPointerUp);
+      carousel.removeEventListener("click", onClickCapture, true);
+      carousel.removeEventListener("mouseenter", onMouseEnter);
+      carousel.removeEventListener("mouseleave", onMouseLeave);
+      carousel.removeEventListener("focusin", onFocusIn);
+      carousel.removeEventListener("focusout", onFocusOut);
+      carousel.removeEventListener("wheel", pauseAfterInteraction);
+      window.removeEventListener("resize", measure);
+      delete carousel.dataset.dragging;
+    };
+  }, []);
+
   return (
     <section className="creators-section" aria-labelledby="creators-title">
       <div className="creators-section__heading">
         <p className="section-kicker">Worked for</p>
         <h2 id="creators-title">Creators who trust the frame</h2>
-        <p>Hover a creator to pause the reel. Select a capsule to visit their channel.</p>
+        <p>Drag or swipe the reel. It pauses while you explore and resumes automatically.</p>
       </div>
-      <div className="creator-carousel" role="region" aria-label="YouTube creators Namay has worked with">
+      <div
+        aria-label="YouTube creators Namay has worked with"
+        className="creator-carousel"
+        ref={carouselRef}
+        role="region"
+      >
         <div className="creator-carousel__track">
-          {[0, 1].map((group) => (
+          {[0, 1, 2].map((group) => (
             <div
-              aria-hidden={group === 1 ? "true" : undefined}
+              aria-hidden={group === 1 ? undefined : "true"}
               className="creator-carousel__group"
               key={group}
             >
@@ -326,7 +505,7 @@ function WorkedForSection() {
                   href={creator.url}
                   key={`${group}-${creator.name}`}
                   rel="noreferrer"
-                  tabIndex={group === 1 ? -1 : undefined}
+                  tabIndex={group === 1 ? undefined : -1}
                   target="_blank"
                 >
                   <span className="creator-capsule__avatar" aria-hidden="true">
@@ -535,8 +714,8 @@ function ProofSection() {
           <figcaption>Culture</figcaption>
         </figure>
         <figure className="proof-thumb proof-thumb--three">
-          <img alt="" height="607" src={siteAsset("assets/work/work-17.webp")} width="1080" />
-          <figcaption>Explainers</figcaption>
+          <img alt="" height="607" src={siteAsset("assets/work/work-03.webp")} width="1080" />
+          <figcaption>Storytelling</figcaption>
         </figure>
 
         <div className="proof-chips" aria-label="Portfolio highlights">
