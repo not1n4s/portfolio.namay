@@ -46,6 +46,6 @@ The included workflows validate the project and publish the static portfolio on 
 
 The GitHub Pages build enables static prerendering and serves the site from the repository base path. In the repository, open **Settings → Pages** and select **GitHub Actions** as the source.
 
-GitHub Pages URL: https://not1n4s.github.io/portfolio.namay/
+Production URL: https://namaycreations.vercel.app/
 
 Existing hosted version: https://frame-current-studio.higgsfield.app

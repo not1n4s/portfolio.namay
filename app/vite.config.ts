@@ -21,6 +21,7 @@ const QUANTA_ICONS_SHIM = fileURLToPath(
 export default defineConfig(({ command, mode }) => {
   const designInspectorEnabled = process.env.HF_DESIGN_INSPECTOR === "1" || mode === "design";
   const githubPages = process.env.GITHUB_PAGES === "true";
+  const staticHosting = githubPages || process.env.VERCEL === "1";
 
   return {
     base: githubPages ? "/portfolio.namay/" : "/",
@@ -101,7 +102,7 @@ export default defineConfig(({ command, mode }) => {
       // inside effects/handlers, or guarded with `typeof window !== "undefined"`.
       tanstackStart({
         server: { entry: "server" },
-        ...(githubPages
+        ...(staticHosting
           ? {
               prerender: {
                 enabled: true,

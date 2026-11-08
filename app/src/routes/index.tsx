@@ -16,7 +16,7 @@ import { scrollScrubScenes, scrollScrubTheme } from "@/scroll-scrub-scenes";
 
 import "../frame-current.css";
 
-const SITE_URL = "https://not1n4s.github.io/portfolio.namay";
+const SITE_URL = "https://namaycreations.vercel.app";
 const LOCAL_WORK_KEY = "namay-portfolio-custom-work-v1";
 
 type WorkItem = {
