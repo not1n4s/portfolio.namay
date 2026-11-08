@@ -217,9 +217,12 @@ export function ScrollScrub({
       "(hover: none) and (pointer: coarse)"
     ).matches;
     const smallViewport = window.matchMedia("(max-width: 860px)");
+    const portraitViewport = window.matchMedia("(orientation: portrait)");
     const isMobile = () => coarsePointer || smallViewport.matches;
     const sourceFor = (segment: RuntimeSegment) =>
-      isMobile() && segment.mobileClip ? segment.mobileClip : segment.clip;
+      isMobile() && portraitViewport.matches && segment.mobileClip
+        ? segment.mobileClip
+        : segment.clip;
     const runtime: RuntimeSegment[] = segments.map((segment, index) => ({
       ...segment,
       band: bandNodes[index],
@@ -590,7 +593,7 @@ export function ScrollScrub({
                 <picture className="scroll-scrub__picture">
                   {segment.mobilePoster ? (
                     <source
-                      media="(hover: none) and (pointer: coarse), (max-width: 860px)"
+                      media="(hover: none) and (pointer: coarse) and (orientation: portrait), (max-width: 860px) and (orientation: portrait)"
                       srcSet={segment.mobilePoster}
                     />
                   ) : null}

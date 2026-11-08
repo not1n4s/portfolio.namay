@@ -289,6 +289,15 @@
   }
 }
 
+@media (max-width: 860px) and (orientation: portrait) {
+  .scroll-scrub__poster,
+  .scroll-scrub__video {
+    object-fit: contain;
+    background: var(--ss-bg);
+    transform: translateZ(0) scale(1.85);
+  }
+}
+
 @media (max-width: 380px), (max-width: 860px) and (max-height: 700px) {
   .scroll-scrub__chapter-pin,
   .scroll-scrub__chapter[data-align="right"] .scroll-scrub__chapter-pin {
@@ -324,6 +333,12 @@
 }
 
 @media (max-width: 860px) and (max-height: 560px) and (orientation: landscape) {
+  .scroll-scrub__poster,
+  .scroll-scrub__video {
+    object-fit: cover;
+    object-position: var(--ss-object-position);
+  }
+
   .scroll-scrub__chapter-pin,
   .scroll-scrub__chapter[data-align="right"] .scroll-scrub__chapter-pin {
     padding: calc(4.6rem + env(safe-area-inset-top))

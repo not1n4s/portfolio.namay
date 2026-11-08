@@ -20,8 +20,6 @@ export const scrollScrubScenes: ScrollScrubScene[] = [
     kicker: "Namay Prakash",
     label: "Opening",
     linger: 0.18,
-    mobileClip: siteAsset("assets/world/frame-current-mobile.mp4"),
-    mobilePoster: siteAsset("assets/world/frame-current-mobile-poster.png"),
     objectPosition: "50% 50%",
     poster: siteAsset("assets/world/frame-current-poster.png"),
     scroll: 7.5,
